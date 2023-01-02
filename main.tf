@@ -95,6 +95,8 @@ resource "aws_ebs_volume" "jupyter" {
   size              = 8
   type              = "gp2"
 
+  encrypted = true
+
   tags = {
     Name        = "${title(var.service)}-${timestamp()}_Anaconda3"
     Service     = "${var.service}"
@@ -124,6 +126,13 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
       kms_master_key_id = aws_kms_key.manifest_key.arn
       sse_algorithm     = "aws:kms"
     }
+  }
+}
+
+resource "aws_s3_bucket_versioning" "versioning_example" {
+  bucket = aws_s3_bucket.manifest_bucket.id
+  versioning_configuration {
+    status = "Disabled"
   }
 }
 
