@@ -141,25 +141,6 @@ resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
   policy = data.aws_iam_policy_document.S3_automation_move_objects.json
 }
 
-#resource "aws_quicksight_group" "waymark" {
-#  group_name = "waymark"
-#}
-
-#resource "aws_quicksight_data_source" "eligibility" {
-#  data_source_id = "eligibility-id"
-#  name           = "A bucket full of data"
-#  type           = "S3"
-#
-#  parameters {
-#    s3 {
-#      manifest_file_location {
-#        bucket = aws_s3_bucket.manifest_bucket.id
-#        key    = "manifest.json"
-#      }
-#    }
-#  }
-#}
-
 terraform {
   backend "local" {
   }
