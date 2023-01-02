@@ -129,27 +129,15 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "example" {
 
 resource "aws_s3_bucket" "manifest_bucket" {
   bucket = "manifest-bucket-${uuid()}"
-  restrict_public_buckets = true
 }
 
-data "aws_iam_policy_document" "S3_automation_move_objects" {
-  statement {
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-    actions = [
-      "s3:*",
-    ]
-    resources = [
-      aws_s3_bucket.manifest_bucket.arn,
-    ]
-  }
-}
-
-resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
+resource "aws_s3_bucket_public_access_block" "manifest_buck_access" {
   bucket = aws_s3_bucket.manifest_bucket.id
-  policy = data.aws_iam_policy_document.S3_automation_move_objects.json
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 terraform {
