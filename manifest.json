@@ -1,0 +1,12 @@
+{
+  "fileLocations": [
+    {
+      "URIs": [
+        "s3://waymark-sample-iris/iris.csv"
+      ]
+    }
+  ],
+  "globalUploadSettings": {
+    "format": "CSV"
+  }
+}

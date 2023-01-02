@@ -1,5 +1,5 @@
 provider "aws" {
-  region  = "us-west-2"
+  region  = "us-east-1"
 }
 
 data "aws_ami" "al2" {
@@ -110,6 +110,55 @@ resource "aws_volume_attachment" "jupyter" {
   volume_id    = "${aws_ebs_volume.jupyter.id}"
   force_detach = true
 }
+
+resource "aws_s3_bucket" "manifest_bucket" {
+  bucket = "manifest-bucket-${uuid()}"
+}
+
+resource "aws_s3_object" "object" {
+  bucket = aws_s3_bucket.manifest_bucket.id
+  key    = "manifest.json"
+  source = "./manifest.json"
+}
+
+data "aws_iam_policy_document" "S3_automation_move_objects" {
+  statement {
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    actions = [
+      "s3:*",
+    ]
+    resources = [
+      aws_s3_bucket.manifest_bucket.arn,
+    ]
+  }
+}
+
+resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
+  bucket = aws_s3_bucket.manifest_bucket.id
+  policy = data.aws_iam_policy_document.S3_automation_move_objects.json
+}
+
+#resource "aws_quicksight_group" "waymark" {
+#  group_name = "waymark"
+#}
+
+#resource "aws_quicksight_data_source" "eligibility" {
+#  data_source_id = "eligibility-id"
+#  name           = "A bucket full of data"
+#  type           = "S3"
+#
+#  parameters {
+#    s3 {
+#      manifest_file_location {
+#        bucket = aws_s3_bucket.manifest_bucket.id
+#        key    = "manifest.json"
+#      }
+#    }
+#  }
+#}
 
 terraform {
   backend "local" {

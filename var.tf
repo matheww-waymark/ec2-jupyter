@@ -1,9 +1,9 @@
 variable "availability_zone" {
-  default = "us-west-2a"
+  default = "us-east-1a"
 }
 
 variable "contact" {
-  default = "blake.cannon@caprinomics.com"
+  default = "mathew.wong@waymarkcare.com"
 }
 
 variable "environment" {
@@ -11,9 +11,9 @@ variable "environment" {
 }
 
 variable "instance_type" {
-  default = "t2.micro"
+  default = "t2.large"
 }
 
 variable "service" {
-  default = "jupyter"
+  default = "waymark-jupyter"
 }
