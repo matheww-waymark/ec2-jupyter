@@ -94,7 +94,6 @@ resource "aws_ebs_volume" "jupyter" {
   availability_zone = "${var.availability_zone}"
   size              = 8
   type              = "gp2"
-
   encrypted = true
 
   tags = {
